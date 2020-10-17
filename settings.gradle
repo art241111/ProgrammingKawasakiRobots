@@ -1,0 +1,3 @@
+rootProject.name = "ProgrammingKawasakiRobots"
+include ':app'
+include ':tcpclient'
