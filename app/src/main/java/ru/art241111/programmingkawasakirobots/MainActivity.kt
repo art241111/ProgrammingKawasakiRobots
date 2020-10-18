@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import com.github.polyKA.kawasakiControlLibrary.KawasakiRobot
+import com.github.polyKA.kawasakiControlLibrary.commands.command.Program
+import com.github.polyKA.kawasakiControlLibrary.commands.command.move.MoveByCoordinate
+import com.github.polyKA.kawasakiControlLibrary.coordinates.Coordinate
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +44,10 @@ class MainActivity : AppCompatActivity() {
 
     fun move(view: View) {
 //        robot.sendCommand("MOVE;BASE;1;-100")
-        robot.move.moveByX(100)
+        val program = Program()
+        program.commands.add(MoveByCoordinate(Coordinate.X, 100.0))
+        program.commands.add(MoveByCoordinate(Coordinate.X, -100.0))
+
+        robot.move.runProgram(program)
     }
 }
