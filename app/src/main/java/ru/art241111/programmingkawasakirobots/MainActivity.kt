@@ -1,14 +1,12 @@
 package ru.art241111.programmingkawasakirobots
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.github.polyKA.kawasakiControlLibrary.KawasakiRobot
-import com.github.polyKA.kawasakiControlLibrary.commands.command.Program
-import com.github.polyKA.kawasakiControlLibrary.commands.command.move.MoveByCoordinate
-import com.github.polyKA.kawasakiControlLibrary.coordinates.Coordinate
-import java.lang.Exception
+
 
 class MainActivity : AppCompatActivity() {
     private val address = "192.168.31.62"
@@ -25,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         robot.position.observe(this, {
             try {
-                Log.d("position_handler", it.array.toString())
+                Log.d("position_handler", it.toString())
             } catch (e: Exception) {
                 Log.d("position_handler", "error")
             }
@@ -34,8 +32,6 @@ class MainActivity : AppCompatActivity() {
         robot.statusRobot.observe(this, {
             Log.d("status_observe", it.toString())
         })
-
-
     }
 
     fun disconnect(view: View) {
@@ -44,10 +40,12 @@ class MainActivity : AppCompatActivity() {
 
     fun move(view: View) {
 //        robot.sendCommand("MOVE;BASE;1;-100")
-        val program = Program()
-        program.commands.add(MoveByCoordinate(Coordinate.X, 100.0))
-        program.commands.add(MoveByCoordinate(Coordinate.X, -100.0))
+//        val program = Program()
+//        program.commands.add(MoveByCoordinate(Coordinate.X, 100.0))
+//        program.commands.add(MoveByCoordinate(Coordinate.X, -100.0))
+//
+//        robot.move.runProgram(program)
+        robot.homePosition.setHomePosition(0.0, 90.0, 0.0, 90.0, 0.0, 0.0)
 
-        robot.move.runProgram(program)
     }
 }
