@@ -5,6 +5,7 @@ import com.github.art241111.tcpClient.writer.Sender
 import com.github.poluka.kControlLibrary.actions.Command
 import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
 import com.github.poluka.kControlLibrary.actions.program.Program
+import com.github.poluka.kControlLibrary.enity.position.Position
 import com.github.poluka.kControlLibrary.handlers.PositionHandler
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -17,6 +18,8 @@ class KRobot {
 
     val position = positionHandler.getPosition()
     val statusRobot = client.getConnectStatus()
+
+    var homePosition = Position(0.0,515.0,242.0,90.0,180.0,0.0)
 
     fun run(@ExecutedOnTheRobot command: Command){
         sender.send(command.run())

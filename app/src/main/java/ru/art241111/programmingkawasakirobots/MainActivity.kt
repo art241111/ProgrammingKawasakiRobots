@@ -44,8 +44,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun move(view: View) {
-        val home = MoveToPoint(TypeOfMovement.LMOVE,
-            Position(0.0,515.0,242.0,90.0,180.0,0.0))
+        val home = MoveToPoint(TypeOfMovement.LMOVE, robot.homePosition)
         val moveX = MoveByCoordinate(Coordinate.X, 200.0)
         val moveDownX = MoveByCoordinate(Coordinate.X, -200.0)
         val program = Program()
@@ -56,5 +55,7 @@ class MainActivity : AppCompatActivity() {
             add(moveDownX)
             add(home)
         }
+
+        robot.run(program)
     }
 }
