@@ -10,7 +10,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class KawasakiRobot {
+class KRobot {
     private val client = Client()
     private val sender: Sender = client.getSender()
     private val positionHandler = PositionHandler()
@@ -23,9 +23,13 @@ class KawasakiRobot {
     }
 
     fun run(@ExecutedOnTheRobot program: Program){
-        program.commands.forEach {
+        program.forEach {
             sender.send(it.run())
         }
+    }
+
+    fun run(@ExecutedOnTheRobot run: KRobot.() -> Unit){
+        run()
     }
 
     fun connect(address: String, port: Int){

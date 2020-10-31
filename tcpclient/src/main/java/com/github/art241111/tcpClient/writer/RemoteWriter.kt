@@ -24,14 +24,14 @@ class RemoteWriter: RemoteWriterImp {
 
     /**
      * Add message to queue.
-     * @param text - the text that will be sent to the server
+     * @param text - the text that will be sent to the server.
      */
     override fun send(text: String) {
         sendQueue.add(text)
     }
 
     /**
-     * Handle queue
+     * Handle queue.
      */
     private fun startSend(){
         GlobalScope.launch {
@@ -50,7 +50,7 @@ class RemoteWriter: RemoteWriterImp {
 
     /**
      * Sending a text command to the server.
-     * @param text - the text that will be sent to the server
+     * @param text - the text that will be sent to the server.
      */
     private fun sendToServer(text: String){
         writer.print(text)

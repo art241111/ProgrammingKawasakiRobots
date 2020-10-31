@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.github.poluka.kControlLibrary.KawasakiRobot
+import com.github.poluka.kControlLibrary.KRobot
 import com.github.poluka.kControlLibrary.actions.move.MoveByCoordinate
 import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
 import com.github.poluka.kControlLibrary.actions.program.Program
@@ -16,7 +16,7 @@ import com.github.poluka.kControlLibrary.enity.position.Position
 class MainActivity : AppCompatActivity() {
     private val address = "192.168.31.62"
     private val port = 49152
-    private val robot = KawasakiRobot()
+    private val robot = KRobot()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,10 +48,13 @@ class MainActivity : AppCompatActivity() {
             Position(0.0,515.0,242.0,90.0,180.0,0.0))
         val moveX = MoveByCoordinate(Coordinate.X, 200.0)
         val moveDownX = MoveByCoordinate(Coordinate.X, -200.0)
-        val program = Program().add(moveX)
-                                       .add(home)
-                                       .add(moveDownX)
-                                       .add(home)
-        robot.run(program)
+        val program = Program()
+
+        program{
+            add(moveX)
+            add(home)
+            add(moveDownX)
+            add(home)
+        }
     }
 }
