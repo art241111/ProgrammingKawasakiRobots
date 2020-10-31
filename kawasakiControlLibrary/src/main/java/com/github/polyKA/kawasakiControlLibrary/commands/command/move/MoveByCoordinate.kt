@@ -1,6 +1,6 @@
 package com.github.polyKA.kawasakiControlLibrary.commands.command.move
 
-import com.github.art241111.tcpClient.writer.SenderImp
+import com.github.art241111.tcpClient.writer.Sender
 import com.github.polyKA.kawasakiControlLibrary.commands.MoveCommand
 import com.github.polyKA.kawasakiControlLibrary.commands.command.implementation.Command
 import com.github.polyKA.kawasakiControlLibrary.coordinates.Coordinate
@@ -17,7 +17,7 @@ class MoveByCoordinate(private val coordinate: Coordinate,
      * Start program.
      * @param sender - sender for sending a message.
      */
-    override fun run(sender: SenderImp) {
+    override fun run(sender: Sender) {
         sender.send(MoveCommand.MOVE_BY_COORDINATE.command
                 + (coordinate.ordinal + 1)
                 + ";"

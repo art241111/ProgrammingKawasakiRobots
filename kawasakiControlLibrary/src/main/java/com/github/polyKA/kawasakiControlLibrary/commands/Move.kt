@@ -1,14 +1,12 @@
 package com.github.polyKA.kawasakiControlLibrary.commands
 
-import com.github.art241111.tcpClient.writer.SenderImp
-import com.github.polyKA.kawasakiControlLibrary.commands.command.Program
+import com.github.art241111.tcpClient.writer.Sender
 import com.github.polyKA.kawasakiControlLibrary.commands.command.gripper.CloseGripper
 import com.github.polyKA.kawasakiControlLibrary.commands.command.move.MoveByCoordinate
-import com.github.polyKA.kawasakiControlLibrary.commands.command.move.MoveToPoint
 import com.github.polyKA.kawasakiControlLibrary.commands.command.gripper.OpenGripper
 import com.github.polyKA.kawasakiControlLibrary.coordinates.Coordinate
 
-class Move(private val sender: SenderImp) {
+class Move(private val sender: Sender) {
     /**
      * Moving the robot along the x coordinate.
      * @param position - the distance to be moved.
@@ -59,8 +57,8 @@ class Move(private val sender: SenderImp) {
      * Move to the desired point
      * @param position - the distance to be moved.
      */
-    fun moveToPoint(typeOfMovement: String, position: String) =
-            MoveToPoint(typeOfMovement, position).run(sender)
+//    fun moveToPoint(typeOfMovement: String, position: String) =
+//            MoveToPoint(typeOfMovement, position).run(sender)
 
-    fun runProgram(program: Program) = program.run(sender)
+
 }

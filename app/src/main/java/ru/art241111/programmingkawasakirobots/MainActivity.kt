@@ -1,11 +1,16 @@
 package ru.art241111.programmingkawasakirobots
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.github.polyKA.kawasakiControlLibrary.KawasakiRobot
+import com.github.poluka.kControlLibrary.KawasakiRobot
+import com.github.poluka.kControlLibrary.actions.move.MoveByCoordinate
+import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
+import com.github.poluka.kControlLibrary.actions.program.Program
+import com.github.poluka.kControlLibrary.enity.Coordinate
+import com.github.poluka.kControlLibrary.enity.TypeOfMovement
+import com.github.poluka.kControlLibrary.enity.position.Position
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,13 +44,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun move(view: View) {
-//        robot.sendCommand("MOVE;BASE;1;-100")
-//        val program = Program()
-//        program.commands.add(MoveByCoordinate(Coordinate.X, 100.0))
-//        program.commands.add(MoveByCoordinate(Coordinate.X, -100.0))
-//
-//        robot.move.runProgram(program)
-        robot.homePosition.setHomePosition(0.0, 90.0, 0.0, 90.0, 0.0, 0.0)
-
+        val home = MoveToPoint(TypeOfMovement.LMOVE,
+            Position(0.0,515.0,242.0,90.0,180.0,0.0))
+        val moveX = MoveByCoordinate(Coordinate.X, 200.0)
+        val moveDownX = MoveByCoordinate(Coordinate.X, -200.0)
+        val program = Program().add(moveX)
+                                       .add(home)
+                                       .add(moveDownX)
+                                       .add(home)
+        robot.run(program)
     }
 }
