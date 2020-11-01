@@ -5,12 +5,12 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.github.poluka.kControlLibrary.KRobot
-import com.github.poluka.kControlLibrary.actions.move.MoveByCoordinate
+import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
 import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
-import com.github.poluka.kControlLibrary.actions.program.Program
-import com.github.poluka.kControlLibrary.dsl.program
+import com.github.poluka.kControlLibrary.dsl.kProgram
 import com.github.poluka.kControlLibrary.enity.Coordinate
 import com.github.poluka.kControlLibrary.enity.TypeOfMovement
+import com.github.poluka.kControlLibrary.enity.position.Position
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,26 +43,55 @@ class MainActivity : AppCompatActivity() {
         robot.disconnect()
     }
 
+    private val blockHeight = 25.0
     fun move(view: View) {
         val home = MoveToPoint(TypeOfMovement.LMOVE, robot.homePosition)
+        val takePoint = Position(-320.0,650.0,-270.0,90.0,180.0,0.0)
+        val putPoint = Position(170.0,540.0,-270.0,90.0,180.0,0.0)
+        val blockLength = 75.0
+        val d = (blockLength - 10) / 2
 
-        val command = program {
-                                        add(home)
-                                        for (i in 0..30){
-                                            if(i%2 == 0){
-                                                moveByCoordinate(Coordinate.X, 10.0*i)
-                                            } else{
-                                                moveByCoordinate(Coordinate.X, -(10.0*i))
-                                            }
-                                            add(home)
-                                        }
-                                        add(home)
-                                    }
+        robot.run(kProgram {
+            for (i in 0..10){
+                add(takeAndPut(takePoint, putPoint, dx = d, dz = i*blockHeight))
+                add(takeAndPut(takePoint, putPoint, dx = -d, dz = i*blockHeight ))
+                add(takeAndPut(takePoint, putPoint, angle = 90.0, dy = d, dz = i*blockHeight))
+                add(takeAndPut(takePoint, putPoint, angle = 90.0,dy = -d, dz = i*blockHeight))
+            }
+            add(home)
+        })
+    }
 
-        val program2 = program {
-            add(command)
-        }
+    @ExecutedOnTheRobot
+    private fun takeAndPut(takePosition: Position, putPosition: Position, angle: Double = 0.0,
+                           dx: Double = 0.0, dy: Double = 0.0, dz: Double = 0.0) = kProgram {
+        add(takeBlock(takePosition))
+        add(putBlock(putPosition, dx = dx,dy = dy, dz = dz, angle = angle))
+    }
 
-        robot.run(program2)
+    @ExecutedOnTheRobot
+    private fun takeBlock(takePosition: Position) = kProgram {
+        departPoint(position = takePosition, dZ = 100.0)
+        move(Coordinate.Z, -100.0)
+        closeGripper()
+        delay(2000L)
+        move(Coordinate.Z, 100.0)
+    }
+
+    @ExecutedOnTheRobot
+    private fun putBlock(putPosition: Position, angle: Double = 0.0,
+                         dx: Double = 0.0, dy: Double = 0.0, dz: Double = 0.0) = kProgram {
+        departPoint(position = putPosition,dX = dx, dY = dy,  dZ = 100.0 + dz, dT = angle)
+        move(Coordinate.Z, -100.0)
+        openGripper()
+        delay(2000L)
+        move(Coordinate.Z, blockHeight + 5)
+        move(Coordinate.X, -100.0)
+    }
+
+    fun goHome(view: View) {
+        robot.run(kProgram {
+            move(TypeOfMovement.LMOVE, robot.homePosition)
+        })
     }
 }

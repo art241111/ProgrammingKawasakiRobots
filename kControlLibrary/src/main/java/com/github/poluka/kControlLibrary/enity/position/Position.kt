@@ -22,7 +22,7 @@ class Position(x: Double, y: Double, z: Double, o: Double, a: Double, t: Double)
      * Получаем доступ через координаты.
      * @param coordinate - координата, по которой нужно олучить значения.
      */
-    operator fun get(coordinate: Coordinate){
+    operator fun get(coordinate: Coordinate) =
         position[coordinate.ordinal]
 //        when(coordinate){
 //            Coordinate.X -> position[0]
@@ -32,7 +32,7 @@ class Position(x: Double, y: Double, z: Double, o: Double, a: Double, t: Double)
 //            Coordinate.DY -> position[4]
 //            Coordinate.DZ -> position[5]
 //        }
-    }
+
 
     /**
      * Изменяем значения через координаты.

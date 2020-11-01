@@ -39,7 +39,11 @@ class RemoteWriter: RemoteWriterImp {
                 if(sendQueue.isNotEmpty()){
                     val text = sendQueue.poll()
                     if(!text.isNullOrEmpty()){
-                        sendToServer(text)
+                        if (text.contains("Delay")){
+                            delay(text.substringAfter(":").toLong())
+                        } else{
+                            sendToServer(text)
+                        }
                     }
                 }
 
