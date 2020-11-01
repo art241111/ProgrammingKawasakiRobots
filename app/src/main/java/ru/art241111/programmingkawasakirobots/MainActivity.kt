@@ -8,9 +8,9 @@ import com.github.poluka.kControlLibrary.KRobot
 import com.github.poluka.kControlLibrary.actions.move.MoveByCoordinate
 import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
 import com.github.poluka.kControlLibrary.actions.program.Program
+import com.github.poluka.kControlLibrary.dsl.program
 import com.github.poluka.kControlLibrary.enity.Coordinate
 import com.github.poluka.kControlLibrary.enity.TypeOfMovement
-import com.github.poluka.kControlLibrary.enity.position.Position
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,15 +47,21 @@ class MainActivity : AppCompatActivity() {
         val home = MoveToPoint(TypeOfMovement.LMOVE, robot.homePosition)
         val moveX = MoveByCoordinate(Coordinate.X, 200.0)
         val moveDownX = MoveByCoordinate(Coordinate.X, -200.0)
-        val program = Program()
 
-        program{
-            add(moveX)
-            add(home)
-            add(moveDownX)
-            add(home)
-        }
+//        program{
+//            add(moveX)
+//            add(home)
+//            add(moveDownX)
+//            add(home)
+//        }
 
-        robot.run(program)
+        val command = program {
+                                        moveByCoordinate(Coordinate.X, 200.0)
+                                        moveToPoint(TypeOfMovement.LMOVE, robot.homePosition)
+                                        moveByCoordinate(Coordinate.X, -200.0)
+                                        add(home)
+                                    }
+
+        robot.run(command)
     }
 }
