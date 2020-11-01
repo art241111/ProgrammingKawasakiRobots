@@ -45,23 +45,24 @@ class MainActivity : AppCompatActivity() {
 
     fun move(view: View) {
         val home = MoveToPoint(TypeOfMovement.LMOVE, robot.homePosition)
-        val moveX = MoveByCoordinate(Coordinate.X, 200.0)
-        val moveDownX = MoveByCoordinate(Coordinate.X, -200.0)
-
-//        program{
-//            add(moveX)
-//            add(home)
-//            add(moveDownX)
-//            add(home)
-//        }
 
         val command = program {
-                                        moveByCoordinate(Coordinate.X, 200.0)
-                                        moveToPoint(TypeOfMovement.LMOVE, robot.homePosition)
-                                        moveByCoordinate(Coordinate.X, -200.0)
+                                        add(home)
+                                        for (i in 0..30){
+                                            if(i%2 == 0){
+                                                moveByCoordinate(Coordinate.X, 10.0*i)
+                                            } else{
+                                                moveByCoordinate(Coordinate.X, -(10.0*i))
+                                            }
+                                            add(home)
+                                        }
                                         add(home)
                                     }
 
-        robot.run(command)
+        val program2 = program {
+            add(command)
+        }
+
+        robot.run(program2)
     }
 }

@@ -9,4 +9,8 @@ open class AddCommandToProgram(){
     protected fun<T: Command> addCommand(command: T){
         commands.add(command)
     }
+
+    protected fun<T: Command> addCommands(commands: List<T>){
+        this.commands.addAll(commands)
+    }
 }

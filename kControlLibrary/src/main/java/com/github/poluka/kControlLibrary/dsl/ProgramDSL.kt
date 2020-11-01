@@ -5,6 +5,7 @@ import com.github.poluka.kControlLibrary.actions.gripper.CloseGripper
 import com.github.poluka.kControlLibrary.actions.gripper.OpenGripper
 import com.github.poluka.kControlLibrary.actions.move.MoveByCoordinate
 import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
+import com.github.poluka.kControlLibrary.actions.program.Program
 import com.github.poluka.kControlLibrary.enity.Coordinate
 import com.github.poluka.kControlLibrary.enity.TypeOfMovement
 import com.github.poluka.kControlLibrary.enity.position.Position
@@ -33,4 +34,5 @@ class Commands: AddCommandToProgram() {
      * @param command - команда, которую требуется добавить в Program.
      */
     fun add(command: Command) = addCommand(command)
+    fun add(command: Program) = addCommands(command.getAll())
 }

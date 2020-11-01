@@ -20,6 +20,7 @@ class Program : Command, MutableList<Command> {
         }
         return command
     }
+    fun getAll(): List<Command> = commandList
 
     override fun contains(element: Command): Boolean = commandList.contains(element)
 
