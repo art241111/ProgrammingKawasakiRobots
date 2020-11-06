@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        robot.statusRobot.observe(this, {
+        robot.connectRobotStatus.observe(this, {
             Log.d("status_observe", it.toString())
         })
     }
@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity() {
 
         robot.run(kProgram{
             moveToPoint(TypeOfMovement.LMOVE, startPosition)
+            moveToPoint(TypeOfMovement.LMOVE, arcPosition)
+            moveToPoint(TypeOfMovement.LMOVE, endPosition)
+
 //            moveByArc(arcPosition, endPosition)
         })
 

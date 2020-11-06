@@ -22,6 +22,8 @@ class RemoteWriter: RemoteWriterImp {
     private val sendQueue: Queue<String> = LinkedList()
     private var delay = 0L
 
+    private var isSafeSendStart = false
+
     /**
      * Add message to queue.
      * @param text - the text that will be sent to the server.
@@ -33,6 +35,8 @@ class RemoteWriter: RemoteWriterImp {
 
     override fun safeSend(text: String) {
         sendQueue.add(text)
+
+        if(!isSafeSendStart) startSend()
     }
 
     override fun stopSending() {
@@ -43,7 +47,7 @@ class RemoteWriter: RemoteWriterImp {
     override fun startSending() {
         isWriting = true
         sendQueue.clear()
-        startSend()
+
     }
 
     /**
@@ -76,6 +80,7 @@ class RemoteWriter: RemoteWriterImp {
      * Handle queue.
      */
     private fun startSend(){
+        isSafeSendStart = true
         GlobalScope.launch {
             while (isWriting){
                 if(sendQueue.isNotEmpty()){

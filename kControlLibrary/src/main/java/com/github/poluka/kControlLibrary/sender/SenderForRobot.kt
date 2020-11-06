@@ -1,18 +1,21 @@
-package com.github.poluka.kControlLibrary.actions.sender
+package com.github.poluka.kControlLibrary.sender
 
 import com.github.art241111.tcpClient.writer.Sender
+import com.github.poluka.kControlLibrary.handlers.programStatusHandler.ProgramStatusHandler
+import com.github.poluka.kControlLibrary.handlers.programStatusHandler.ProgramStatusUpdate
 import kotlinx.coroutines.*
 import java.util.*
+import kotlin.concurrent.thread
 
-class SenderForRobot(private val sender: Sender,
-                     private var delay: Long = 5L): Sender {
-    private val programStatus = ProgramStatus()
+class SenderForRobot(private val sender: Sender): Sender, ProgramStatusUpdate {
+    val programStatusHandler = ProgramStatusHandler(this)
+
+    private var programStatus = ProgramStatus(ProgramStatusEnum.READY_TO_SEND)
     private val sendQueue: Queue<String> = LinkedList()
     private var isWriting = false
 
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Default + job)
-
 
     /**
      * Add message to queue.
@@ -23,18 +26,17 @@ class SenderForRobot(private val sender: Sender,
     }
 
     override fun safeSend(text: String) {
-        if(programStatus.status == ProgramStatusEnum.READY_TO_SEND){
-            sendQueue.add(text)
-        }
+        sendQueue.add(text)
     }
 
     /**
      * Handle queue.
      */
     private fun startSend(){
-        scope.launch {
+        GlobalScope.launch {
             while (isWriting){
-                if(sendQueue.isNotEmpty()){
+                if(sendQueue.isNotEmpty() && programStatus.status == ProgramStatusEnum.READY_TO_SEND){
+                    programStatus.status = ProgramStatusEnum.PROGRAM_IS_RUNNING
                     val text = sendQueue.poll()
                     if(!text.isNullOrEmpty()){
                         if (text.contains("Delay")){
@@ -60,5 +62,9 @@ class SenderForRobot(private val sender: Sender,
         isWriting = true
         sendQueue.clear()
         startSend()
+    }
+
+    override fun whenProgramStatusUpdate(statusUpdate: ProgramStatus) {
+        programStatus = statusUpdate
     }
 }

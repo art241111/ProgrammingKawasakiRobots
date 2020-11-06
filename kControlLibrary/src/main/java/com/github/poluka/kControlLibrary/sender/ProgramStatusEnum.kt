@@ -1,4 +1,4 @@
-package com.github.poluka.kControlLibrary.actions.sender
+package com.github.poluka.kControlLibrary.sender
 
 enum class ProgramStatusEnum {
     READY_TO_SEND,
