@@ -29,14 +29,14 @@ class Commands: AddCommandToProgram() {
     fun openGripper() = addCommand(OpenGripper())
     fun closeGripper() = addCommand(CloseGripper())
 
-    fun move(coordinate: Coordinate, distance: Double)
+    fun moveByCoordinate(coordinate: Coordinate, distance: Double)
             = addCommand(MoveByCoordinate(coordinate, distance))
 
-    fun move(typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE, position: Position)
+    fun moveToPoint(typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE, position: Position)
             = addCommand(MoveToPoint(typeOfMovement, position))
 
-    fun move(positionOnArc: Position,
-             endPosition: Position)
+    fun moveByArc(positionOnArc: Position,
+                         endPosition: Position)
                 = addCommand(MoveC(positionOnArc, endPosition))
 
     fun departPoint(typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE, position: Position,

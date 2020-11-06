@@ -39,20 +39,20 @@ class ThirdProblem(private val robot: KRobot) {
     @ExecutedOnTheRobot
     private fun takeBlock(takePosition: Position) = kProgram {
         departPoint(position = takePosition, dZ = 100.0)
-        move(Coordinate.Z, -100.0)
+        moveByCoordinate(Coordinate.Z, -100.0)
         closeGripper()
         delay(2000L)
-        move(Coordinate.Z, 100.0)
+        moveByCoordinate(Coordinate.Z, 100.0)
     }
 
     @ExecutedOnTheRobot
     private fun putBlock(putPosition: Position, angle: Double = 0.0,
                          dx: Double = 0.0, dy: Double = 0.0, dz: Double = 0.0) = kProgram {
         departPoint(position = putPosition,dX = dx, dY = dy,  dZ = 100.0 + dz, dT = angle)
-        move(Coordinate.Z, -100.0)
+        moveByCoordinate(Coordinate.Z, -100.0)
         openGripper()
         delay(2000L)
-        move(Coordinate.Z, blockHeight + 5)
-        move(Coordinate.X, -100.0)
+        moveByCoordinate(Coordinate.Z, blockHeight + 5)
+        moveByCoordinate(Coordinate.X, -100.0)
     }
 }
