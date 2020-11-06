@@ -4,7 +4,7 @@ import com.github.poluka.kControlLibrary.actions.Command
 import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
 import com.github.poluka.kControlLibrary.enity.Coordinate
 
-private const val MOVE_BY_COORDINATE = "MOVE;BASE;"
+private const val MOVE_BY_COORDINATE = "MOVE;BASE"
 
 /**
  * Moving a certain distance on one axis.
@@ -18,5 +18,5 @@ data class MoveByCoordinate(private val coordinate: Coordinate,
     /**
      * Start program.
      */
-    override fun run() = MOVE_BY_COORDINATE + (coordinate.ordinal + 1) + ";" + distance
+    override fun run() = "$MOVE_BY_COORDINATE;${(coordinate.ordinal + 1)};$distance"
 }

@@ -11,6 +11,6 @@ private const val MOVE_TO_POINT = "MOVETO"
 data class MoveToPoint(private val typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE,
                            private val position: Position): Command {
 
-    override fun run() = "${MOVE_TO_POINT};$typeOfMovement;$position"
+    override fun run() = "$MOVE_TO_POINT;$typeOfMovement;$position"
 
 }
