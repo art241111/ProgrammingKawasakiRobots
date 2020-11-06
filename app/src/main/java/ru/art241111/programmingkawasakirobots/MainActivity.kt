@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.github.poluka.kControlLibrary.KRobot
 import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
+import com.github.poluka.kControlLibrary.actions.move.MoveC
 import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
 import com.github.poluka.kControlLibrary.dsl.kProgram
 import com.github.poluka.kControlLibrary.enity.Coordinate
@@ -14,7 +15,7 @@ import com.github.poluka.kControlLibrary.enity.position.Position
 
 
 class MainActivity : AppCompatActivity() {
-    private val address = "192.168.31.62"
+    private val address = "192.168.56.1"
     private val port = 49152
     private val robot = KRobot()
 
@@ -44,7 +45,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun move(view: View) {
-       ThirdProblem(robot).move()
+        val home = MoveToPoint(TypeOfMovement.LMOVE, robot.homePosition)
+        val startPosition = Position(220,515,32,90,-180,0)
+        val arcPosition = Position(0,515,132,90,-180,0)
+        val endPosition = Position(-220,515,32,90,-180,0)
+
+        robot.run(kProgram{
+            move(TypeOfMovement.LMOVE, startPosition)
+            move(arcPosition, endPosition)
+        })
+
     }
 
 

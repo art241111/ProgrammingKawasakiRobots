@@ -4,7 +4,7 @@ import com.github.poluka.kControlLibrary.actions.Command
 import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
 import com.github.poluka.kControlLibrary.enity.Coordinate
 
-const val MOVE_BY_COORDINATE = "MOVE;BASE;"
+private const val MOVE_BY_COORDINATE = "MOVE;BASE;"
 
 /**
  * Moving a certain distance on one axis.

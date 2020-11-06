@@ -8,6 +8,7 @@ import com.github.poluka.kControlLibrary.actions.gripper.OpenGripper
 import com.github.poluka.kControlLibrary.actions.gripper.RotateGripper
 import com.github.poluka.kControlLibrary.actions.move.DepartPoint
 import com.github.poluka.kControlLibrary.actions.move.MoveByCoordinate
+import com.github.poluka.kControlLibrary.actions.move.MoveC
 import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
 import com.github.poluka.kControlLibrary.actions.program.Program
 import com.github.poluka.kControlLibrary.enity.Coordinate
@@ -34,6 +35,10 @@ class Commands: AddCommandToProgram() {
     fun move(typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE, position: Position)
             = addCommand(MoveToPoint(typeOfMovement, position))
 
+    fun move(positionOnArc: Position,
+             endPosition: Position)
+                = addCommand(MoveC(positionOnArc, endPosition))
+
     fun departPoint(typeOfMovement: TypeOfMovement = TypeOfMovement.LMOVE, position: Position,
                     dX: Double  = 0.0, dY: Double = 0.0, dZ: Double = 0.0,
                     dO: Double  = 0.0, dA: Double = 0.0, dT: Double = 0.0)
@@ -42,6 +47,8 @@ class Commands: AddCommandToProgram() {
     fun rotateGripper(angleOfRotation: Double) = addCommand(RotateGripper(angleOfRotation))
 
     fun delay(delayTime: Long) = addCommand(Delay(delayTime))
+
+    operator fun invoke(command: Command) = add(command)
 
     /**
      * Если требуется добавить не реализованную команду или

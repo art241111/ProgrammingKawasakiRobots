@@ -10,6 +10,12 @@ class Position(x: Double, y: Double, z: Double, o: Double, a: Double, t: Double)
     private val position = doubleArrayOf(x, y, z, o, a, t)
 
     constructor(): this(0.0,0.0,0.0,0.0,0.0,0.0)
+    constructor(x: Int, y: Int, z: Int, o: Int, a: Int, t: Int): this(x.toDouble(),
+                                                                      y.toDouble(),
+                                                                      z.toDouble(),
+                                                                      o.toDouble(),
+                                                                      a.toDouble(),
+                                                                      t.toDouble())
 
     /**
      *
