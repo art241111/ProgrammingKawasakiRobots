@@ -6,16 +6,19 @@ import com.github.poluka.kControlLibrary.actions.Command
 import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
 import com.github.poluka.kControlLibrary.actions.delay.Delay
 import com.github.poluka.kControlLibrary.actions.program.Program
+import com.github.poluka.kControlLibrary.actions.sender.SenderForRobot
 import com.github.poluka.kControlLibrary.enity.position.Position
 import com.github.poluka.kControlLibrary.handlers.PositionHandler
+import com.github.poluka.kControlLibrary.handlers.ProgramStatusHandler
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class KRobot {
     private val client = Client()
-    private val sender: Sender = client.getSender()
+    private val sender: Sender = SenderForRobot(client.getSender(), 300L)
     private val positionHandler = PositionHandler()
+    private val programStatusHandler = ProgramStatusHandler()
 
     val position = positionHandler.getPosition()
     val statusRobot = client.getConnectStatus()
@@ -33,17 +36,19 @@ class KRobot {
     }
 
     fun connect(address: String, port: Int){
-        client.connect(address, port, 300L)
+        client.connect(address, port)
         setPositionHandler()
+        sender.startSending()
     }
 
     fun disconnect(){
         client.disconnect()
+        sender.stopSending()
     }
 
     private fun setPositionHandler(){
         client.addHandlers(
-            listOf(positionHandler)
+            listOf(positionHandler, programStatusHandler)
         )
     }
 }
