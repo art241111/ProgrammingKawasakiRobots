@@ -20,9 +20,10 @@ import java.net.Socket
  */
 class Client(){
     private val connection = Connection()
-    private val remoteReader: RemoteReaderImp = RemoteReader()
-    private val remoteWriter: RemoteWriterImp = RemoteWriter()
+    private val remoteReader = RemoteReader()
+    private val remoteWriter = RemoteWriter()
     fun getSender(): Sender = remoteWriter
+    fun getSafeSender(): Sender = remoteWriter
 
     private val handlers: MutableList<HandlerImp> = mutableListOf()
 

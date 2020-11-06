@@ -7,7 +7,7 @@ import java.net.Socket
  * that will connect to send data to the server.
  * @author Artem Gerasimov.
  */
-interface RemoteWriterImp: Sender {
+interface RemoteWriterImp {
     fun createWriter(socket: Socket, delay: Long = 0L)
     fun destroyWriter(stopCommand: String = "q")
 }

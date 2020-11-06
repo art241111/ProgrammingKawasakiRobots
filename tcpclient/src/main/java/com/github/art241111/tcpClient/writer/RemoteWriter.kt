@@ -12,7 +12,7 @@ import java.util.*
  * you to send text strings to the server.
  * @author Artem Gerasimov.
  */
-class RemoteWriter: RemoteWriterImp {
+class RemoteWriter: RemoteWriterImp, Sender, SafeSender {
     // A variable that displays whether our Writer is working.
     private var isWriting = false
 

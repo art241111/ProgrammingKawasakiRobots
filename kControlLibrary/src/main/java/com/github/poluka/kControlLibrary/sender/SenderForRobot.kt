@@ -1,13 +1,13 @@
 package com.github.poluka.kControlLibrary.sender
 
+import com.github.art241111.tcpClient.writer.SafeSender
 import com.github.art241111.tcpClient.writer.Sender
 import com.github.poluka.kControlLibrary.handlers.programStatusHandler.ProgramStatusHandler
 import com.github.poluka.kControlLibrary.handlers.programStatusHandler.ProgramStatusUpdate
 import kotlinx.coroutines.*
 import java.util.*
-import kotlin.concurrent.thread
 
-class SenderForRobot(private val sender: Sender): Sender, ProgramStatusUpdate {
+class SenderForRobot(private val sender: Sender): Sender, SafeSender,ProgramStatusUpdate {
     val programStatusHandler = ProgramStatusHandler(this)
 
     private var programStatus = ProgramStatus(ProgramStatusEnum.READY_TO_SEND)
@@ -33,7 +33,7 @@ class SenderForRobot(private val sender: Sender): Sender, ProgramStatusUpdate {
      * Handle queue.
      */
     private fun startSend(){
-        GlobalScope.launch {
+        scope.launch {
             while (isWriting){
                 if(sendQueue.isNotEmpty() && programStatus.status == ProgramStatusEnum.READY_TO_SEND){
                     programStatus.status = ProgramStatusEnum.PROGRAM_IS_RUNNING
@@ -45,6 +45,7 @@ class SenderForRobot(private val sender: Sender): Sender, ProgramStatusUpdate {
                             send(text)
                         }
                     }
+                    delay(5L)
                 }
             }
         }
@@ -59,6 +60,7 @@ class SenderForRobot(private val sender: Sender): Sender, ProgramStatusUpdate {
     }
 
     override fun startSending() {
+        programStatus.status = ProgramStatusEnum.READY_TO_SEND
         isWriting = true
         sendQueue.clear()
         startSend()
