@@ -12,6 +12,7 @@ import com.github.poluka.kControlLibrary.actions.move.MoveByCoordinate
 import com.github.poluka.kControlLibrary.actions.move.MoveC
 import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
 import com.github.poluka.kControlLibrary.actions.program.Program
+import com.github.poluka.kControlLibrary.actions.service.signal.Signal
 import com.github.poluka.kControlLibrary.enity.Coordinate
 import com.github.poluka.kControlLibrary.enity.TypeOfMovement
 import com.github.poluka.kControlLibrary.enity.position.Position
@@ -52,6 +53,9 @@ class Commands: AddCommandToProgram() {
     operator fun invoke(command: Command) = add(command)
 
     fun waitSignal(signal: Int) = addCommand(WaitingSignal(signal))
+
+    fun signalOn(signal: Int) = addCommand(Signal(signal))
+    fun signalOff(signal: Int) = addCommand(Signal(-signal))
 
     /**
      * Если требуется добавить не реализованную команду или
