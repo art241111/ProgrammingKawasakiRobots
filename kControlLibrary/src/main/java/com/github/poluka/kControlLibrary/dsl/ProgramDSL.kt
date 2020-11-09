@@ -3,6 +3,7 @@ package com.github.poluka.kControlLibrary.dsl
 import com.github.poluka.kControlLibrary.actions.Command
 import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
 import com.github.poluka.kControlLibrary.actions.delay.Delay
+import com.github.poluka.kControlLibrary.actions.delay.WaitingSignal
 import com.github.poluka.kControlLibrary.actions.gripper.CloseGripper
 import com.github.poluka.kControlLibrary.actions.gripper.OpenGripper
 import com.github.poluka.kControlLibrary.actions.gripper.RotateGripper
@@ -49,6 +50,8 @@ class Commands: AddCommandToProgram() {
     fun delay(delayTime: Long) = addCommand(Delay(delayTime))
 
     operator fun invoke(command: Command) = add(command)
+
+    fun waitSignal(signal: Int) = addCommand(WaitingSignal(signal))
 
     /**
      * Если требуется добавить не реализованную команду или

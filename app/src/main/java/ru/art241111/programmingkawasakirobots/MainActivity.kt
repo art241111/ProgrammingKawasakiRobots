@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         robot.run(kProgram{
             moveToPoint(TypeOfMovement.LMOVE, startPosition)
             moveToPoint(TypeOfMovement.JMOVE, arcPosition)
+            this.waitSignal(2140)
             moveToPoint(TypeOfMovement.LMOVE, endPosition)
 
 //            moveByArc(arcPosition, endPosition)
