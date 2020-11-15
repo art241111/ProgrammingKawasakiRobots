@@ -1,6 +1,7 @@
 package com.github.poluka.kControlLibrary
 
 import com.github.art241111.tcpClient.Client
+import com.github.art241111.tcpClient.connection.Status
 import com.github.poluka.kControlLibrary.actions.Command
 import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
 import com.github.poluka.kControlLibrary.actions.program.Program
@@ -14,7 +15,9 @@ class KRobot {
     private val positionHandler = PositionHandler()
 
     val position = positionHandler.getPosition()
-    val connectRobotStatus = client.getConnectStatus()
+
+    fun setConnectRobotStatusObserver(observer: ((Status) -> Unit))
+            =  client.setStatusObserver(observer)
 
     var homePosition = Position(0.0,515.0,242.0,90.0,180.0,0.0)
 

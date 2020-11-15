@@ -12,6 +12,8 @@ import com.github.poluka.kControlLibrary.actions.move.MoveByCoordinate
 import com.github.poluka.kControlLibrary.actions.move.MoveC
 import com.github.poluka.kControlLibrary.actions.move.MoveToPoint
 import com.github.poluka.kControlLibrary.actions.program.Program
+import com.github.poluka.kControlLibrary.actions.service.mototrs.KMotorStatus
+import com.github.poluka.kControlLibrary.actions.service.mototrs.KMotors
 import com.github.poluka.kControlLibrary.actions.service.signal.Signal
 import com.github.poluka.kControlLibrary.enity.Coordinate
 import com.github.poluka.kControlLibrary.enity.TypeOfMovement
@@ -56,6 +58,9 @@ class Commands: AddCommandToProgram() {
 
     fun signalOn(signal: Int) = addCommand(Signal(signal))
     fun signalOff(signal: Int) = addCommand(Signal(-signal))
+
+//    fun motorOn() = addCommand(KMotors(KMotorStatus.ON))
+//    fun motorOff() = addCommand(KMotors(KMotorStatus.OFF))
 
     /**
      * Если требуется добавить не реализованную команду или

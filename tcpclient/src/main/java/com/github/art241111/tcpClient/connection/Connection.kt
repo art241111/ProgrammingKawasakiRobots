@@ -1,39 +1,41 @@
 package com.github.art241111.tcpClient.connection
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.SocketTimeoutException
+import kotlin.properties.Delegates
 
 /**
  * Create connection class.
  * @author Artem Gerasimov.
  */
-class Connection: LiveData<Socket>(), ConnectInt {
+class Connection {
+    var socket = Socket()
     // Connect status.
-    private val connectStatus: MutableLiveData<Status> = MutableLiveData()
-    override fun getConnectStatus(): LiveData<Status> = connectStatus
+    var status: Status by Delegates.observable(Status.DISCONNECTED) { _, _, newValue ->
+        onStatusChanged?.invoke(newValue)
+    }
 
-    /**
-     * Create empty socket and set status DISCONNECTED
-     */
-    init {
-        connectStatus.value = Status.DISCONNECTED
-        this.postValue(Socket())
+    private var onStatusChanged: ((Status) -> Unit)? = null
+
+    fun setStatusObserver(observer: ((Status) -> Unit)) {
+        onStatusChanged = observer
+        onStatusChanged?.invoke(status)
     }
 
     /**
      * Disconnect from server.
      */
-    override fun disconnect(){
-        if(connectStatus.value!! == Status.COMPLETED){
-            this.value!!.close()
-            connectStatus.postValue(Status.DISCONNECTED)
-            this.postValue(Socket())
+    fun disconnect(){
+        if(status == Status.COMPLETED){
+            socket.close()
+            status = Status.DISCONNECTED
+
+            socket = Socket()
+            onStatusChanged = null
         }
     }
 
@@ -42,32 +44,32 @@ class Connection: LiveData<Socket>(), ConnectInt {
      * If the connection did not occur within 2 seconds,
      * the error status is displayed.
      */
-    override suspend fun connect(address: String, port: Int) =
+    suspend fun connect(address: String, port: Int) =
         withContext(Dispatchers.Default) {
             connectToTheServer(address, port)
         }
 
-        private fun connectToTheServer(address: String, port: Int){
-            if(connectStatus.value!! == Status.DISCONNECTED ||
-                connectStatus.value!! == Status.ERROR
-            ){
-                try {
-                    // Set connecting status
-                    connectStatus.postValue(Status.CONNECTING)
+    private fun connectToTheServer(address: String, port: Int){
+        if(status != Status.CONNECTING || status != Status.COMPLETED){
+            try {
+                // Set connecting status
+                status = Status.CONNECTING
 
-                    // Try to connect
-                    this.value!!.connect(InetSocketAddress(address, port), 2000)
+                // Try to connect
+                socket.connect(InetSocketAddress(address, port), 2000)
 
-                    // If the connection is successful, we notify you about it
-                    connectStatus.postValue(Status.COMPLETED)
-                } catch (e: SocketTimeoutException){
-                    connectStatus.postValue(Status.ERROR)
-                    this.postValue(Socket())
-                }catch (e: Exception){
-                    Log.e("client_connection", "Fail connection", e)
-                    connectStatus.postValue(Status.ERROR)
-                    this.postValue(Socket())
-                }
+                // If the connection is successful, we notify you about it
+                status = Status.COMPLETED
+            } catch (e: SocketTimeoutException){
+                // TODO: Если долго подключаться с error, то сокет перестанет создаватся
+                Log.e("client_connection", "Fail connection", e)
+                status = Status.ERROR
+                socket = Socket()
+            }catch (e: Exception){
+                Log.e("client_connection", "Fail connection", e)
+                status = Status.ERROR
+                socket = Socket()
             }
         }
+    }
 }

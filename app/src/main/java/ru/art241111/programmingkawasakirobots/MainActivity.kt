@@ -24,17 +24,17 @@ class MainActivity : AppCompatActivity() {
     fun connect(view: View) {
         robot.connect(address, port)
 
-        robot.position.observe(this, {
+        robot.setConnectRobotStatusObserver {
+            Log.d("status_observe", it.toString())
+        }
+
+        robot.position.observe(this) {
             try {
                 Log.d("position_handler", it.toString())
             } catch (e: Exception) {
                 Log.d("position_handler", "error")
             }
-        })
-
-        robot.connectRobotStatus.observe(this, {
-            Log.d("status_observe", it.toString())
-        })
+        }
     }
 
     fun disconnect(view: View) {
@@ -55,7 +55,8 @@ class MainActivity : AppCompatActivity() {
             this.signalOff(2150)
 //            moveByArc(arcPosition, endPosition)
         })
-
+//        MOVETO;LMOVE;220;515;32;90;-180;0
+//        CMOVE;0;515;132;90;-180;0;-220;515;32;103;-180;0
     }
 
 

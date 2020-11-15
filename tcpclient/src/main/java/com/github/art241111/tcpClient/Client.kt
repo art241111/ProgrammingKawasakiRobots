@@ -1,6 +1,5 @@
 package com.github.art241111.tcpClient
 
-import androidx.lifecycle.LiveData
 import com.github.art241111.tcpClient.connection.Connection
 import com.github.art241111.tcpClient.connection.Status
 import com.github.art241111.tcpClient.reader.RemoteReader
@@ -10,6 +9,7 @@ import com.github.art241111.tcpClient.writer.RemoteWriterImp
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.github.art241111.tcpClient.handlers.HandlerImp
+import com.github.art241111.tcpClient.writer.SafeSender
 import com.github.art241111.tcpClient.writer.Sender
 import kotlinx.coroutines.delay
 import java.net.Socket
@@ -23,15 +23,14 @@ class Client(){
     private val remoteReader = RemoteReader()
     private val remoteWriter = RemoteWriter()
     fun getSender(): Sender = remoteWriter
-    fun getSafeSender(): Sender = remoteWriter
+    fun getSafeSender(): SafeSender = remoteWriter
 
     private val handlers: MutableList<HandlerImp> = mutableListOf()
 
-    private val connectStatus: LiveData<Status> = connection.getConnectStatus()
     /**
      * @return connect status
      */
-    fun getConnectStatus(): LiveData<Status> = connectStatus
+    fun setStatusObserver(observer: ((Status) -> Unit)) = connection.setStatusObserver(observer)
 
     @Suppress("unused")
     fun addHandlers(handlers: List<HandlerImp>) {
@@ -61,8 +60,8 @@ class Client(){
             connection.connect(address, port)
 
             // When the device connects to the server, it creates Reader and Writer
-            if(connection.value != null && connection.value!!.isConnected){
-                startReadingAndWriting(socket = connection.value!!, senderDelay)
+            if(connection.socket != null && connection.socket!!.isConnected){
+                startReadingAndWriting(socket = connection.socket!!, senderDelay)
 
                 // Add handlers to Reader
                 remoteReader.addHandlers(handlers)

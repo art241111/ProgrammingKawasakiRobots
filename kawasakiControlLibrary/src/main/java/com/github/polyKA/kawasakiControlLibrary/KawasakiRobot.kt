@@ -12,7 +12,7 @@ class KawasakiRobot {
     private val positionHandler = PositionHandler()
 
     val position = positionHandler.getPosition()
-    val statusRobot = client.getConnectStatus()
+//    val statusRobot = client.getConnectStatus()
 
     val move = Move(client.getSender())
     val homePosition = HomePosition()
