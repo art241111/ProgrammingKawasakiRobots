@@ -27,16 +27,16 @@ class MainActivity : AppCompatActivity() {
             Log.d("status_observe", it.toString())
         }
 
-        robot.connect(address, port)
-
-
-        robot.position.observe(this) {
+        robot.setPositionObserver {
             try {
                 Log.d("position_handler", it.toString())
             } catch (e: Exception) {
                 Log.d("position_handler", "error")
             }
         }
+
+        robot.connect(address, port)
+
     }
 
     fun disconnect(view: View) {
@@ -52,13 +52,8 @@ class MainActivity : AppCompatActivity() {
         robot.run(kProgram{
             moveToPoint(TypeOfMovement.LMOVE, startPosition)
             moveToPoint(TypeOfMovement.JMOVE, arcPosition)
-            this.signalOn(2150)
             moveToPoint(TypeOfMovement.LMOVE, endPosition)
-            this.signalOff(2150)
-//            moveByArc(arcPosition, endPosition)
         })
-//        MOVETO;LMOVE;220;515;32;90;-180;0
-//        CMOVE;0;515;132;90;-180;0;-220;515;32;103;-180;0
     }
 
 

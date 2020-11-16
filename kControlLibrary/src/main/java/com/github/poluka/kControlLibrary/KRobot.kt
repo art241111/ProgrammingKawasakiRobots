@@ -14,7 +14,9 @@ class KRobot {
     private val sender = SenderForRobot(client.getSender())
     private val positionHandler = PositionHandler()
 
-    val position = positionHandler.getPosition()
+    fun setPositionObserver(observer: ((Position) -> Unit)) =
+        positionHandler.setPositionObserver(observer)
+
 
     fun setConnectRobotStatusObserver(observer: ((Status) -> Unit))
             =  client.setStatusObserver(observer)
