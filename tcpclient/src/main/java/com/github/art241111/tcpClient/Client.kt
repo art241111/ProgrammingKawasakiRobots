@@ -6,13 +6,12 @@ import com.github.art241111.tcpClient.reader.RemoteReader
 import com.github.art241111.tcpClient.reader.RemoteReaderImp
 import com.github.art241111.tcpClient.writer.RemoteWriter
 import com.github.art241111.tcpClient.writer.RemoteWriterImp
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import com.github.art241111.tcpClient.handlers.HandlerImp
 import com.github.art241111.tcpClient.writer.SafeSender
 import com.github.art241111.tcpClient.writer.Sender
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import java.net.Socket
+import kotlin.concurrent.thread
 
 /**
  * TCP client.
@@ -55,17 +54,23 @@ class Client(){
     fun connect(address: String,
                 port: Int,
                 senderDelay: Long = 0L){
-        GlobalScope.launch {
-            // Connect to tcp server
+        val job = SupervisorJob()
+        val scope = CoroutineScope(Dispatchers.IO + job)
+
+        scope.launch {
             connection.connect(address, port)
 
             // When the device connects to the server, it creates Reader and Writer
-            if(connection.socket != null && connection.socket!!.isConnected){
-                startReadingAndWriting(socket = connection.socket!!, senderDelay)
+            if(connection.socket.isConnected){
+                startReadingAndWriting(socket = connection.socket, senderDelay)
 
                 // Add handlers to Reader
                 remoteReader.addHandlers(handlers)
+            } else{
+                this.cancel()
             }
+
+
         }
     }
 

@@ -22,11 +22,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun connect(view: View) {
-        robot.connect(address, port)
 
         robot.setConnectRobotStatusObserver {
             Log.d("status_observe", it.toString())
         }
+
+        robot.connect(address, port)
+
 
         robot.position.observe(this) {
             try {
