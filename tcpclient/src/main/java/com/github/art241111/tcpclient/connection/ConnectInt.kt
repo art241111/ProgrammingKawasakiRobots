@@ -1,7 +1,5 @@
 package com.github.art241111.tcpClient.connection
 
-import androidx.lifecycle.LiveData
-
 /**
  * Interface that should implement the
  * class that will connect to the server.
@@ -11,5 +9,5 @@ interface ConnectInt {
     suspend fun connect(address: String, port: Int)
     fun disconnect()
 
-    fun getConnectStatus(): LiveData<Status>
+//    fun getConnectStatus(): Status by Dele
 }

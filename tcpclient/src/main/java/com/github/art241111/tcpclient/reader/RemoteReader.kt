@@ -1,6 +1,5 @@
 package com.github.art241111.tcpClient.reader
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -70,9 +69,9 @@ class RemoteReader: RemoteReaderImp {
                         }
                     }
                 } catch (e: NullPointerException) {
-                    Log.e("reader", "No elements come", e)
+//                     Log.e("reader", "No elements come", e)
                 } catch (e: Exception){
-                    Log.e("reader", "Unknown error", e)
+//                    Log.e("reader", "Unknown error", e)
                 }
             }
         }

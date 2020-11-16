@@ -1,6 +1,5 @@
 package com.github.art241111.tcpClient.connection
 
-import android.util.Log
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.net.SocketTimeoutException
