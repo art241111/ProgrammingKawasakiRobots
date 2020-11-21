@@ -28,7 +28,7 @@ class KRobot {
         sender.safeSend(command.run())
     }
 
-    fun run(program: Program){
+    fun run(@ExecutedOnTheRobot program: Program){
        program.runWithAction{ command ->
            sender.safeSend(command.run())
        }

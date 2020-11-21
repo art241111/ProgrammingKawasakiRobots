@@ -34,6 +34,7 @@ fun Program.runWithAction(action: (commands: Command) -> Unit){
  * Класс, который позволяет добавлять команды в програму.
  * @author artem241120@gmail.com (Artem Gerasimov)
  */
+@ExecutedOnTheRobot
 class Program(val dslCommands: Program.() -> Unit) {
     internal lateinit var funOnCommand: (commands: Command) -> Unit
 
