@@ -49,11 +49,12 @@ class MainActivity : AppCompatActivity() {
         val arcPosition = Position(0,515,132,90,-180,0)
         val endPosition = Position(-220,515,32,103,-180,6)
 
-        robot.run(kProgram{
-            moveToPoint(TypeOfMovement.LMOVE, startPosition)
-            moveToPoint(TypeOfMovement.JMOVE, arcPosition)
-            moveToPoint(TypeOfMovement.LMOVE, endPosition)
-        })
+        robot.run(
+                kProgram {
+                    moveToPoint(TypeOfMovement.LMOVE, startPosition)
+                    moveToPoint(TypeOfMovement.JMOVE, arcPosition)
+                    moveToPoint(TypeOfMovement.LMOVE, endPosition)
+                })
     }
 
 

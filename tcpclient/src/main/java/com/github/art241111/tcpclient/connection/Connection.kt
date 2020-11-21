@@ -45,7 +45,7 @@ class Connection {
 
 
     private fun connectToTheServer(address: String, port: Int) {
-        if(status != Status.CONNECTING || status != Status.COMPLETED){
+        if(status != Status.CONNECTING && status != Status.COMPLETED){
             try {
                 // Set connecting status
                 status = Status.CONNECTING

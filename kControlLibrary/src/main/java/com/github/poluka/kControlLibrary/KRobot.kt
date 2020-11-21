@@ -4,7 +4,8 @@ import com.github.art241111.tcpClient.Client
 import com.github.art241111.tcpClient.connection.Status
 import com.github.poluka.kControlLibrary.actions.Command
 import com.github.poluka.kControlLibrary.actions.annotation.ExecutedOnTheRobot
-import com.github.poluka.kControlLibrary.actions.program.Program
+import com.github.poluka.kControlLibrary.dsl.Program
+import com.github.poluka.kControlLibrary.dsl.runWithAction
 import com.github.poluka.kControlLibrary.sender.SenderForRobot
 import com.github.poluka.kControlLibrary.enity.position.Position
 import com.github.poluka.kControlLibrary.handlers.PositionHandler
@@ -27,10 +28,10 @@ class KRobot {
         sender.safeSend(command.run())
     }
 
-    fun run(@ExecutedOnTheRobot program: Program){
-        program.forEach {
-            this.run(it)
-        }
+    fun run(program: Program){
+       program.runWithAction{ command ->
+           sender.safeSend(command.run())
+       }
     }
 
     fun connect(address: String, port: Int){
