@@ -8,4 +8,4 @@ data class Delay(val delayTime: Long): Command {
 }
 
 fun Program.delay(delayTime: Long)
-      A  = doWithCommand(Delay(delayTime))
+        = doWithCommand(Delay(delayTime))
