@@ -51,11 +51,14 @@ class KRobot {
 
         scope.launch {
             client.connect(address, port)
-            setPositionHandler()
-            sender.startSending()
 
-            if(this@KRobot::programWhenConnect.isInitialized){
-                run(programWhenConnect)
+            if (client.status == Status.COMPLETED){
+                setPositionHandler()
+                sender.startSending()
+
+                if(this@KRobot::programWhenConnect.isInitialized){
+                    run(programWhenConnect)
+                }
             }
         }
     }

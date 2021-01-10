@@ -21,11 +21,11 @@ class Client(){
     fun getSender(): Sender = remoteWriter
     fun getSafeSender(): SafeSender = remoteWriter
 
-
     /**
      * @return connect status
      */
     fun setStatusObserver(observer: ((Status) -> Unit)) = connection.setStatusObserver(observer)
+    var status = Status.DISCONNECTED
 
     fun addHandlers(handlers: List<HandlerImp>) {
         remoteReader.addHandlers(handlers)
@@ -45,13 +45,16 @@ class Client(){
         // When the device connects to the server, it creates Reader and Writer
         withContext(scope.coroutineContext) {
             connection.connect(address, port)
+            status = Status.CONNECTING
 
             while (connection.status != Status.ERROR) {
                 // When the device connects to the server, it creates Reader and Writer
                 if (connection.socket.isConnected) {
                     startReadingAndWriting(socket = connection.socket, senderDelay)
+                    status = Status.COMPLETED
                     break
                 } else {
+                    status = Status.ERROR
                     this.cancel()
                 }
             }
@@ -68,6 +71,7 @@ class Client(){
 
             delay(50L)
             connection.disconnect()
+            status = Status.DISCONNECTED
         }
     }
 
